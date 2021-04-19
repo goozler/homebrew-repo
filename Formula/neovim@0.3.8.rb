@@ -10,9 +10,9 @@ class NeovimAT038 < Formula
   end
 
   bottle do
-    sha256 "6cfd2fa392a29729a4bf46764efddc5462189d555d5c4910f960af2438ecf4a4" => :mojave
-    sha256 "97b6c3dc5dda485bd195650be9e060304e2a03ed2c62bdedf643876971726657" => :high_sierra
-    sha256 "3c46065de77aaa929da89748bbf3fe584fe6ef8d9d9919267c7a5bba3f2a345b" => :sierra
+    sha256 mojave:      "6cfd2fa392a29729a4bf46764efddc5462189d555d5c4910f960af2438ecf4a4"
+    sha256 high_sierra: "97b6c3dc5dda485bd195650be9e060304e2a03ed2c62bdedf643876971726657"
+    sha256 sierra:      "3c46065de77aaa929da89748bbf3fe584fe6ef8d9d9919267c7a5bba3f2a345b"
   end
 
   head do
@@ -72,7 +72,7 @@ class NeovimAT038 < Formula
       ].each do |rock|
         dir, rock = rock.split("/")
         cd "build/src/#{dir}" do
-          output = Utils.popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
+          output = Utils.safe_popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
           unpack_dir = output.split("\n")[-2]
           cd unpack_dir do
             system "luarocks", "make", lua_path, "--tree=#{buildpath}/deps-build"
@@ -117,4 +117,3 @@ class NeovimAT038 < Formula
     assert_equal "Hello World from Neovim!!", (testpath/"test.txt").read.chomp
   end
 end
-
